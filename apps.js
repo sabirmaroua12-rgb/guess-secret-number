@@ -1,4 +1,4 @@
-var randomNumber = Math.floor(Math.random() * 10) + 1;
+var randomNumber = Math.floor(Math.random() * 100) + 1;
 var guesses = document.querySelector('.guesses');
 var lastResult = document.querySelector('.lastResult');
 var lowOrHi = document.querySelector('.lowOrHigh');
@@ -18,57 +18,59 @@ function checkGuess() {
     if (userGuess === randomNumber) {
         lastResult.textContent = 'Congratulations! You got it right!';
         lastResult.style.backgroundColor = 'green'; 
-        lowOrHigh.textContent = '';
+        lowOrHi.textContent = '';
         setGameOver();
-    } else if (guessCount === 10) {
+    } else if (guessCount === 5) {
         lastResult.textContent = '!!!GAME OVER!!!';
-        lowOrHigh.textContent = '';
+        lowOrHi.textContent = '';
         setGameOver();
     } else {
         lastResult.textContent = 'Wrong!';
-
-       if (userGuess < randomNumber) {
+        if (userGuess < randomNumber) {
             lowOrHigh.textContent = 'Last guess was too low!';
-       } else if(userGuess > randomNumber) {
-            lowOrHigh.textContent = 'Last guess was too high!';
-         }
-
-         lastResult.style.backgroundColor = 'red';
-
+        } else if(userGuess > randomNumber) {
+            lowOrHi.textContent = 'Last guess was too high!';
         }
+        lastResult.style.backgroundColor = 'red';
         guessCount++;
         guessField.value = '';
         guessField.focus();
     }
+}
 
+guessSubmit.addEventListener('click', checkGuess);
 
-    guessSubmit.addEventListener('click', checkGuess);
-
-    function setGameOver() {
-        guessField.disabled = true;
-        guessSubmit.disabled = true;
-        resetButton = document.createElement('button');
-        resetButton.textContent = 'play again';
-        document.body.appendChild(resetButton);
-        resetButton.addEventListener('click', resetGame);
+guessField.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        checkGuess();
     }
+});
 
-    function resetGame() {
-guessCount = 1;
-var resetParas = document.querySelectorAll('.resultParas');
-for (var i = 0; i < resetParas.length; i++) {
-    resetParas[i].textContent = '';
- }
+function setGameOver() {
+    guessField.disabled = true;
+    guessSubmit.disabled = true;
+    resetButton = document.createElement('button');
+    resetButton.textContent = 'play again';
+    document.body.appendChild(resetButton);
+    resetButton.addEventListener('click', resetGame);
+}
+
+function resetGame() {
+    guessCount = 1;
+    var resetParas = document.querySelectorAll('.resultParas p');
+    for (var i = 0; i < resetParas.length; i++) {
+        resetParas[i].textContent = '';
+    }
     resetButton.parentNode.removeChild(resetButton);
 
     guessField.disabled = false;
     guessSubmit.disabled = false;
     guessField.value = '';
-    guessFiled.focus();
+    guessField.focus();
 
-    randomNumber = Math.floor(Math.random() * 10) + 1;
-    } 
-    console.log(randomNumber);
+    randomNumber = Math.floor(Math.random() * 100) + 1;
+}
+console.log(randomNumber);
 
 
 
